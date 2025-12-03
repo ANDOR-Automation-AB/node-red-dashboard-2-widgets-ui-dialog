@@ -1,0 +1,47 @@
+{
+  "name": "@andor-automation/node-red-dashboard-2-widgets-ui-dialog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build"    
+  },
+  "keywords": [
+    "node-red",
+    "dashboard",
+    "contrib",
+    "widget",
+    "dialog"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "nodes",
+    "resources",
+    "package.json"
+  ],
+  "dependencies": {
+    "vue": "^3.5.22"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "vite": "^7.1.7",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-static-copy": "^3.1.2"
+  },
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "ui-dialog": "nodes/ui-dialog.js"
+    }
+  },
+  "node-red-dashboard-2": {
+    "version": "0.8.0",
+    "widgets": {
+      "ui-dialog": {
+        "output": "ui-dialog.umd.js",
+        "component": "UIDialog"
+      }
+    }
+  }
+}
