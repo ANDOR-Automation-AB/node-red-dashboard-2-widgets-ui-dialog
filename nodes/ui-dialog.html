@@ -18,12 +18,21 @@
                 }
             },
             height: { value: 0 },
+            inputDialog: { value: false },
+            label: { value: "open dialog" },
             title: { value: "dialog" },
             message: {
                 value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             },
             maxWidth: { value: 500 },
-            icon: { value: 'mdi-alert-circle-outline' }
+            icon: { value: 'mdi-alert-circle-outline' },
+            dialogType: { value: "dismiss-dialog" },
+            persistent: { value: false },
+            dismissText: { value: "Ok" },
+            confirmText: { value: "Ja" },
+            declineText: { value: "Nej" },
+            topic: { value: "" },
+            payload: { value: "" }
         },
         inputs: 1,
         outputs: 1,
@@ -57,11 +66,113 @@
         <button class="editor-button" id="node-input-size"></button>
     </div>
     <div class="form-row">
+        <label for="node-input-dialogType"><i class="fa fa-list"></i> Type</label>
+        <select id="node-input-dialogType">
+            <option value="dismiss-dialog" selected>Dismiss</option>
+            <option value="yesno-dialog">Yes / No</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-inputDialog">Input dialog</label>
+        <input type="checkbox" id="node-input-inputDialog" style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-persistent">Persistent</label>
+        <input type="checkbox" id="node-input-persistent" style="width: auto;">
+    </div>
+    <div class="form-row">
         <label for="node-input-title"><i class="fa fa-tag"></i> Title</label>
         <input type="text" id="node-input-title">
     </div>
+    <div id="message-area">
+        <div class="form-row">
+            <label for="node-input-message"><i class="fa fa-commenting-o"></i> Message</label>
+            <textarea id="node-input-message" rows="5"></textarea>
+        </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-icon"><i class="fa fa-picture-o"></i> Icon</label>
+        <input type="text" id="node-input-icon" placeholder="mdi-alert-circle-outline">
+    </div>
+    <div class="form-row">
+        <label for="node-input-label">Button label</label>
+        <input type="text" id="node-input-label">
+    </div>
+    <div class="form-row">
+        <label for="node-input-maxWidth">Max width</label>
+        <input type="number" id="node-input-maxWidth">
+    </div>
+    <div class="form-row">
+        <label for="node-input-dismissText">Dismiss</label>
+        <input type="text" id="node-input-dismissText" placeholder="Ok">
+    </div>
+    <div class="form-row">
+        <label for="node-input-confirmText">Confirm</label>
+        <input type="text" id="node-input-confirmText" placeholder="Ja">
+    </div>
+    <div class="form-row">
+        <label for="node-input-declineText">Decline</label>
+        <input type="text" id="node-input-declineText" placeholder="Nej">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic">Topic</label>
+        <input type="text" id="node-input-topic">
+    </div>
+    <div class="form-row">
+        <label for="node-input-payload">Payload</label>
+        <input type="text" id="node-input-payload">
+    </div>
 </script>
 
+<style>
+    #message-area textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+</style>
+
 <script type="text/markdown" data-help-name="ui-dialog">
+
+Provides options to display a dialog that can be opened manually or triggered by incoming messages.
+
+**Type**  
+Selects which kind of dialog to show.
+- *Dismiss*: Shows a single button that closes the dialog.
+- *Yes / No*: Shows two buttons. Selecting “Yes” outputs the configured topic and payload.
+
+**Input dialog**  
+If enabled, the dialog opens automatically whenever a message arrives on the input.  
+The incoming `msg.topic` and `msg.payload` are used for the output event.
+
+**Persistent**  
+Prevents the dialog from being closed by clicking outside of it.  
+When enabled, the dialog can only be closed using the available action buttons.
+
+**Title**  
+Shown at the top of the dialog.
+
+**Message**  
+Text displayed inside the dialog.
+
+**Icon**  
+Optional icon shown in the dialog header.  
+Uses Material Design Icons, e.g. `mdi-alert-circle-outline`.
+
+**Button label**  
+Label for the button that opens the dialog when not using input-dialog mode.
+
+**Max width**  
+Maximum width of the dialog in pixels.
+
+**Dismiss / Confirm / Decline**  
+Labels for the respective action buttons depending on dialog type.
+
+**Topic**  
+Default topic sent when the dialog is confirmed.  
+Overridden if input dialog is enabled and an incoming `msg.topic` arrives.
+
+**Payload**  
+Default payload sent when the dialog is confirmed.  
+Overridden if input dialog is enabled and an incoming `msg.payload` arrives.
 
 </script>

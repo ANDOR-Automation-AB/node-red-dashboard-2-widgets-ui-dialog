@@ -1,17 +1,27 @@
 <template>
   <div class="text-center pa-4">
-    <v-btn @click="dialog = true">
-      Open Dialog
+    <v-btn v-if="!props.inputDialog" @click="dialog = true">
+      {{ props.label }}
     </v-btn>
 
-    <v-dialog v-model="dialog" width="auto">
+    <v-dialog v-model="dialog" width="auto" v-bind="props.persistent ? { persistent: '' } : {}">
       <v-card
-        max-width="400"
-        prepend-icon="mdi-update"
-        text="Your application will relaunch automatically after the update is complete."
-        title="Update in progress">
-        <template v-slot:actions>
-          <v-btn class="ms-auto" text="Ok" @click="dialog = false"></v-btn>
+        :max-width="props.maxWidth"
+        :prepend-icon="props.icon"
+        :text="props.message"
+        :title="props.title">
+        <template v-if="props.dialogType === 'dismiss-dialog'" v-slot:actions>
+          <v-btn class="ms-auto" @click="dialog = false">
+            {{ props.dismissText }}
+          </v-btn>
+        </template>
+        <template v-if="props.dialogType === 'yesno-dialog'" v-slot:actions>
+          <v-btn color="primary" @click="onConfirm()">
+            {{ props.confirmText }}
+          </v-btn>
+          <v-btn class="ms-auto" @click="dialog = false">
+            {{ props.declineText }}
+          </v-btn>
         </template>
       </v-card>
     </v-dialog>
@@ -39,11 +49,26 @@
     },
     methods: {
       onInput(msg) {
-        this.msg = msg
+        this.msg = {
+          topic:  msg.topic    || this.props.topic,
+          payload: msg.payload || this.props.payload
+        }
+        if (this.props.inputDialog) {
+          this.dialog = true
+        }
       },
       onLoad(msg, base) {
-        this.msg = msg
         this.base = base
+        this.msg = msg || {}
+        this.msg.topic =   msg?.topic   || this.props.topic
+        this.msg.payload = msg?.payload || this.props.payload
+      },
+      onConfirm() {
+        this.dialog = false
+        this.$socket.emit('widget-send', this.id, {
+          topic:   this.msg.topic,
+          payload: this.msg.payload
+        })
       }
     }
   }

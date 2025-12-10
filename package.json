@@ -13,7 +13,7 @@
     "widget",
     "dialog"
   ],
-  "author": "",
+  "author": "Johan Krusing",
   "license": "MIT",
   "files": [
     "nodes",
